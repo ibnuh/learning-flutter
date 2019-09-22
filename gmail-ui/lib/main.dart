@@ -10,7 +10,7 @@ class GmailApp extends StatelessWidget {
         theme: ThemeData(primaryColor: Colors.red),
         home: Scaffold(
           appBar: AppBar(
-            title: Text('Primary'),
+            title: Text('Inbox'),
             actions: <Widget>[
               IconButton(
                 icon: Icon(Icons.search),
@@ -19,11 +19,26 @@ class GmailApp extends StatelessWidget {
             ],
           ),
           drawer: Drawer(),
-          body: Container(
-            child: Center(
-              child: Text('How ya doin'),
+          body: _buildEmails(),
+        ));
+  }
+
+  Widget _buildEmails() {
+    return ListView(
+      children: <Widget>[
+        ListTile(
+          leading: CircleAvatar(
+            backgroundColor: Colors.green.shade300,
+            child: Text(
+              "A",
+              style: TextStyle(color: Colors.white),
             ),
           ),
-        ));
+          title: Text("Amazon"),
+          subtitle: Text("Your order is in process mate, please be patient."),
+        ),
+        Divider(),
+      ],
+    );
   }
 }
