@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:faker/faker.dart';
 import 'dart:math';
+import 'package:intl/intl.dart';
 
 void main() => runApp(GmailApp());
 
@@ -29,18 +30,27 @@ class GmailApp extends StatelessWidget {
 class Email {
   String sender;
   String excerpt;
+  String receivedAt;
 }
 
 class RandomEmailsState extends State<RandomEmail> {
   final List<Email> _emails = List<Email>();
+  final _random = new Random();
+  int _generateRandomNumber(int min, int max) =>
+      min + _random.nextInt(max - min);
 
   List<Widget> _generateRandomEmails() {
     for (var i = 0; i < 10; i++) {
       var email = new Email();
+      var randomDateTime = new DateTime.utc(
+          2019, _generateRandomNumber(1, 12), _generateRandomNumber(1, 28));
 
       email.sender = faker.person.name();
       email.excerpt = faker.lorem.sentence();
+      email.receivedAt =
+          new DateFormat("MMM dd").format(randomDateTime).toString();
 
+      print(email.receivedAt);
       _emails.add(email);
     }
 
@@ -56,12 +66,24 @@ class RandomEmailsState extends State<RandomEmail> {
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                   ),
-                  title: Container(
-                    margin: const EdgeInsets.only(bottom: 5),
-                    child: Text(
-                      e.sender,
-                      style: TextStyle(fontSize: 17),
-                    ),
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 5),
+                        child: Text(
+                          e.sender,
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                      Container(
+                        child: Text(
+                          e.receivedAt,
+                          style: TextStyle(fontSize: 13, color: Colors.grey),
+                        ),
+                      )
+                    ],
                   ),
                   subtitle: Text(e.excerpt),
                 ),
