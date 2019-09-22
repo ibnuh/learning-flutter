@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:faker/faker.dart';
 
 void main() => runApp(GmailApp());
 
