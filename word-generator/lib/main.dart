@@ -32,6 +32,8 @@ class RandomWordsState extends State<RandomWords> {
           } else {
             _saved.add(pair);
           }
+
+          print(isSaved);
         });
       },
     );
@@ -51,10 +53,29 @@ class RandomWordsState extends State<RandomWords> {
           _suggestions.addAll(generateWordPairs().take(10));
         }
 
-        print(index);
-
         return _buildRow(_suggestions[index]);
       },
+    );
+  }
+
+  void _pushSaved() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(builder: (BuildContext context) {
+        // TODO:: Figure out why the UI didn't refresh after a state change on different route
+        // _buildRow() onTap event doesn't work as intended.
+        final Iterable<ListTile> tiles = _saved.map((WordPair pair) {
+          return _buildRow(pair);
+        });
+
+        final List<Widget> divided =
+            ListTile.divideTiles(context: context, tiles: tiles).toList();
+
+        return Scaffold(
+            appBar: AppBar(
+              title: Text('Saved words'),
+            ),
+            body: ListView(children: divided));
+      }),
     );
   }
 
@@ -63,6 +84,9 @@ class RandomWordsState extends State<RandomWords> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Random Word Generator'),
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.list), onPressed: _pushSaved)
+        ],
       ),
       body: _buildSuggestions(),
     );
