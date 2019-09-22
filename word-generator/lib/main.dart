@@ -8,6 +8,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Random Word Generator',
+      theme: ThemeData(primaryColor: Colors.white),
       home: RandomWords(),
     );
   }
