@@ -1,5 +1,5 @@
-import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
+import 'package:english_words/english_words.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,10 +15,26 @@ class MyApp extends StatelessWidget {
 
 class RandomWordsState extends State<RandomWords> {
   final List<WordPair> _suggestions = <WordPair>[];
+  final Set<WordPair> _saved = Set<WordPair>();
   final TextStyle _biggerFont = const TextStyle(fontSize: 18);
 
   Widget _buildRow(WordPair pair) {
-    return ListTile(title: Text(pair.asPascalCase, style: _biggerFont));
+    final bool isSaved = _saved.contains(pair);
+
+    return ListTile(
+      title: Text(pair.asPascalCase, style: _biggerFont),
+      trailing: Icon(isSaved ? Icons.favorite : Icons.favorite_border,
+          color: isSaved ? Colors.red : null),
+      onTap: () {
+        setState(() {
+          if (isSaved) {
+            _saved.remove(pair);
+          } else {
+            _saved.add(pair);
+          }
+        });
+      },
+    );
   }
 
   Widget _buildSuggestions() {
